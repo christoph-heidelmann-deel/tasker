@@ -6,62 +6,62 @@ import Tasks from "./components/Tasks";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
-  page: {
-    padding: "1rem"
-  }
+    page: {
+        padding: "1rem"
+    }
 }));
 
 function PrivateRoute({ component: Component, ...rest }) {
-  return (
-    <Route
-      {...rest}
-      render={props =>
-        props.isLoggedIn ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: props.location }
-            }}
-          />
-        )
-      }
-    />
-  );
+    return (
+        <Route
+            {...rest}
+            render={props =>
+                props.isLoggedIn ? (
+                    <Component {...props} />
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: "/login",
+                            state: { from: props.location }
+                        }}
+                    />
+                )
+            }
+        />
+    );
 }
 
 function App(props) {
-  const classes = useStyles();
+    const classes = useStyles();
 
-  return (
-    <Router>
-      <div className={classes.page}>
-        {props.isLoggedIn ? (
-          <div>
-            <Redirect to="/" />
-            <Route exact path="/" component={Tasks} />
-          </div>
-        ) : (
-          <div>
-            <Route path="/login" component={Login} />
-            <PrivateRoute
-              exact
-              path="/"
-              component={Tasks}
-              isLoggedIn={props.isLoggedIn}
-            />
-          </div>
-        )}
-      </div>
-    </Router>
-  );
+    return (
+        <Router>
+            <div className={classes.page}>
+                {props.isLoggedIn ? (
+                    <div>
+                        <Redirect to="/" />
+                        <Route exact path="/" component={Tasks} />
+                    </div>
+                ) : (
+                    <div>
+                        <Route path="/login" component={Login} />
+                        <PrivateRoute
+                            exact
+                            path="/"
+                            component={Tasks}
+                            isLoggedIn={props.isLoggedIn}
+                        />
+                    </div>
+                )}
+            </div>
+        </Router>
+    );
 }
 
 const mapStateToProps = state => {
-  return {
-    isLoggedIn: state.user.isLoggedIn
-  };
+    return {
+        isLoggedIn: state.user.isLoggedIn
+    };
 };
 
 export default connect(mapStateToProps)(App);
