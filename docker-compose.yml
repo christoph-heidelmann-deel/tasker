@@ -1,0 +1,18 @@
+version: "3"
+services:
+  backend:
+    build: ./backend
+    depends_on:
+      - mongo
+    ports:
+      - "8081:3001"
+    volumes:
+      - ./backend:/usr/app/backend/
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - db-data:/data/db
+volumes:
+  db-data:
