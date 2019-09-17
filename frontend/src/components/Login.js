@@ -1,4 +1,4 @@
-import React, {useState, setValue} from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -7,8 +7,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { login } from '../actions'
 import { connect } from 'react-redux'
+import axios from 'axios'
+import { login } from '../actions'
 
 const useStyles = makeStyles(theme => ({
   
@@ -17,6 +18,17 @@ const useStyles = makeStyles(theme => ({
 const Login = ({ dispatch }) => {
   const classes = useStyles();
   const [username, setUsername] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault()
+    axios.get(`http://localhost:8081/${username}`)
+      .then((response) => {
+          dispatch(login(username, response.data.tasks))
+      })
+      .catch((error) => {
+          console.log(error);
+      }); 
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -27,10 +39,7 @@ const Login = ({ dispatch }) => {
         </Typography>
         <form className={classes.form} 
               noValidate
-              onSubmit={e => {
-                e.preventDefault()
-                dispatch(login(username))
-              }}>
+              onSubmit={handleLogin}>
           <TextField
             variant="outlined"
             margin="normal"

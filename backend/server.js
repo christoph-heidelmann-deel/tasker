@@ -8,7 +8,7 @@ const TasksModel = require('./models/TasksModel')
 
 const app = express();
 app.use(cors({
-  origin: 'http://localhost:8080'
+  origin: 'http://localhost:3000'
 }));
 
 app.use(bodyParser.json());
@@ -79,10 +79,7 @@ app.delete('/:username/:taskId', async (req, res) =>
       });
       return
     }
-    res.json({
-      _id: req.params.taskId, 
-      username: req.params.username
-    });
+    jsonResponseByUsername(req, res)
   });
 });
 
