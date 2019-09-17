@@ -5,6 +5,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const TasksModel = require('./models/TasksModel')
 
+
 const app = express();
 app.use(cors({
   origin: 'http://localhost:8080'
@@ -84,5 +85,5 @@ app.delete('/:username/:taskId', async (req, res) =>
     });
   });
 });
-
-app.listen(3001)
+console.log(process.env.PORT)
+app.listen(process.env.PORT)

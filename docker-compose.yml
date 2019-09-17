@@ -1,13 +1,23 @@
 version: "3"
 services:
   backend:
-    build: ./backend
+    build: .
     depends_on:
       - mongo
     ports:
-      - "8081:3001"
+      - "8081:3000"
+    environment:
+      - PORT=3000
     volumes:
-      - ./backend:/usr/app/backend/
+      - ./backend:/usr/app/:rw
+  frontend:
+    build: .
+    ports:
+      - "8080:3001"
+    environment:
+      - PORT=3001
+    volumes:
+      - ./frontend:/usr/app/:rw
   mongo:
     image: mongo
     ports:
