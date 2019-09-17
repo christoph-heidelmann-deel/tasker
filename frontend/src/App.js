@@ -1,13 +1,13 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
-import Login from "./components/Login"
-import Tasks from "./components/Tasks"
-import { connect } from 'react-redux'
+import Login from "./components/Login";
+import Tasks from "./components/Tasks";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
-  page : {
-    padding: '1rem'
+  page: {
+    padding: "1rem"
   }
 }));
 
@@ -39,13 +39,18 @@ function App(props) {
       <div className={classes.page}>
         {props.isLoggedIn ? (
           <div>
-            <Redirect to="/"/>
-            <Route exact path='/' component={Tasks}/>
+            <Redirect to="/" />
+            <Route exact path="/" component={Tasks} />
           </div>
         ) : (
           <div>
             <Route path="/login" component={Login} />
-            <PrivateRoute exact path='/' component={Tasks} isLoggedIn={props.isLoggedIn}/>
+            <PrivateRoute
+              exact
+              path="/"
+              component={Tasks}
+              isLoggedIn={props.isLoggedIn}
+            />
           </div>
         )}
       </div>
