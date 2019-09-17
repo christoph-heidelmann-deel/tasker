@@ -1,10 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Login from "./components/Login"
 import Tasks from "./components/Tasks"
-
-const isAuthenticated = false;
+import { connect } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   page : {
@@ -17,7 +16,7 @@ function PrivateRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={props =>
-        isAuthenticated ? (
+        props.isLoggedIn ? (
           <Component {...props} />
         ) : (
           <Redirect
@@ -32,16 +31,32 @@ function PrivateRoute({ component: Component, ...rest }) {
   );
 }
 
-function App() {
+function App(props) {
   const classes = useStyles();
+
   return (
     <Router>
       <div className={classes.page}>
-        <Route path="/login" component={Login} />
-        <PrivateRoute exact path='/' component={Tasks} />
+        {props.isLoggedIn ? (
+          <div>
+            <Redirect to="/"/>
+            <Route exact path='/' component={Tasks}/>
+          </div>
+        ) : (
+          <div>
+            <Route path="/login" component={Login} />
+            <PrivateRoute exact path='/' component={Tasks} isLoggedIn={props.isLoggedIn}/>
+          </div>
+        )}
       </div>
     </Router>
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    isLoggedIn: state.user.isLoggedIn
+  };
+};
+
+export default connect(mapStateToProps)(App);

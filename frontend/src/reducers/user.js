@@ -1,11 +1,9 @@
-import { login,logout } from '../actions'
-
-const user = (state = logout, action) => {
+const user = (state =  {isLoggedIn : false}, action) => {
   switch (action.type) {
     case 'LOGIN':
-        return action.username
+        return Object.assign({}, state, {isLoggedIn : true, username: action.username});
     case 'LOGOUT':
-        return action.username
+        return Object.assign({}, state, {isLoggedIn : false});
     default:
       return state
   }
